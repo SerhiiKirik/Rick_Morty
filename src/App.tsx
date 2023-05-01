@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import './App.scss';
 import { Oval } from 'react-loader-spinner';
 import { CardStats } from './components/CardStats/CardStats';
@@ -28,6 +28,8 @@ export const App: React.FC = () => {
     setSelectedSpecies,
   } = useFilters({ cards });
 
+  const isPending = useMemo(() => (!isLoading && !preparedCards.length), []);
+
   return (
     <div className="App__wrapper">
       <div className="App__CharacterFilters">
@@ -53,7 +55,7 @@ export const App: React.FC = () => {
         />
       </div>
 
-      {!isLoading && !preparedCards.length && (
+      {isPending && (
         <h2 className="App__noCharacters">
           Have not characters
         </h2>
@@ -64,7 +66,7 @@ export const App: React.FC = () => {
         cards={preparedCards}
       />
 
-      {isLoading && !preparedCards.length && (
+      {isPending && (
         <Oval
           color="#000"
           wrapperClass="App__loader"
